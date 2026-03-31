@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskForge | Todo-Advance App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body id="body">
+
+    <div class="errormodal" id="errormodal"></div>
+    <nav>
+        <div id="counttask"></div>
+        <div class="appname">
+            <h1>TaskForge🔥</h1>
+        </div>
+        <div class="buttons">
+            <button id="maintask">All Task</button>
+            <button id="openaddtaskmodal">Add New Task</button>
+            <select name="filterbycategory" id="filterbycategory"></select>
+            <select name="filterbypriority" id="filterbypriority">
+                <option value="">Filter by Priority</option>
+                <option value="high">High</option>
+                <option value="normal">Normal</option>
+                <option value="low">Low</option>
+            </select>
+            <button id="themechange">Change Theme</button>
+            <button id="allcompletedtask">All Completed Task</button>
+            <button id="allpendingtask">All Pending Task</button>
+        </div>
+    </nav>
+    <main>
+        <div id="taskcontainer">
+            <div id="tasklist"></div>
+        </div>
+    </main>
+    <div class="modals" id="modals">
+        <div id="newtaskmodal">
+            <h2>Add New Task</h2>
+            <form onclick="event.preventDefault()">
+                <label for="tasktitle">Title</label>
+                <input type="text" name="tasktitle" id="tasktitle">
+                <label for="maintask">Your Task</label>
+                <textarea name="maintask" id="maintask" cols="30" rows="10"></textarea>
+                <label for="taskcategory">type the Category of this task</label>
+                <input type="text" name="taskcategory" id="taskcategory">
+                <label for="taskimportant">Important level</label>
+                <select name="taskimportant" id="taskimportant">
+                    <option value="high">High Important</option>
+                    <option value="normal">Normal</option>
+                    <option value="low">Low</option>
+                </select>
+
+                <button id="taskaddbtn">Add Task</button>
+                <button id="closetaskmodal">Close</button>
+            </form>
+        </div>
+        <div id="updatetaskmodal">
+            <h2>Update your Task Here </h2>
+            <form onclick="event.preventDefault()">
+                <label for="updatetasktitle">Title</label>
+                <input type="text" name="updatetasktitle" id="updatetasktitle">
+                <label for="updatemaintask">Your Task</label>
+                <textarea name="updatemaintask" id="updatemaintask" cols="30" rows="10"></textarea>
+                <label for="updatetaskcategory">type the Category of this task</label>
+                <input type="text" name="updatetaskcategory" id="updatetaskcategory">
+                <label for="updatetaskimportant">Important level</label>
+                <select name="updatetaskimportant" id="updatetaskimportant">l
+                    <option value="high">High Important</option>
+                    <option value="normal">Normal</option>
+                    <option value="low">Low</option>
+                </select>
+                <button id="updatetaskbtn">Update</button>
+                <button id="closeupdatemodal">Close</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
