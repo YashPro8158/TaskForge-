@@ -31,9 +31,6 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-   display: flex;
-  justify-content: center;
-  flex-direction: column;
 }
 
 /* NAVBAR */
@@ -44,9 +41,6 @@ nav {
   padding: 15px 30px;
   background: var(--card);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
 }
 
 /* BUTTONS */
@@ -86,8 +80,6 @@ select {
 /* MAIN TASK AREA */
 main {
   padding: 30px;
-  width: 100%;
-  max-width: 900px;
 }
 
 /* TASK CONTAINER */
@@ -116,10 +108,53 @@ main {
   transition: all 0.3s ease-in;
 }
 
+#fullviewtaskcard {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#fullviewtaskcard h1,
+h3 {
+  margin-bottom: 30px;
+
+}
+
+
+#fullviewtaskcard p {
+  line-height: 25px;
+}
+
+#taskfullwidth {
+  position: fixed;
+  /* 🔥 sabse important */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  z-index: 9999;
+}
+
+.textcontents {
+  width: 80%;
+  height: 80%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  padding: 15px 20px;
+  margin: 10px 0;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
 /* TASK ENTRY ANIMATION */
 @keyframes fadeSlideIn {
   from {
-    opacity: 0;
     transform: translateY(20px) scale(0.75);
   }
 
@@ -171,6 +206,57 @@ span {
 }
 
 
+#pinmodalbox {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 66%;
+  height: 30vh;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border: 2px solid white;
+  margin: auto 0px;
+  padding: 20px;
+  line-height: 40px;
+  display: none;
+  border-radius: 8px;
+}
+
+#pinmodalbox.activepinbox {
+  display: flex;
+}
+
+.pincontent {
+  line-height: 48px;
+}
+
+.pincontent label {
+  color: white;
+  font-weight: bolder;
+  font-size: 1.5em;
+
+}
+
+.pincontent input {
+  width: 100%;
+}
+
+.pincontent #checkpinbtn,
+#closepinbox {
+  border: 1px solid white;
+
+}
+
+.pincontent #checkpinbtn {
+  width: 50%;
+}
+
+.pincontent #closepinbox {
+  width: 49%;
+}
+
 /* MODALS BACKDROP */
 .modals {
   position: fixed;
@@ -190,12 +276,19 @@ span {
   display: none;
 }
 
+.modals #newtaskmodal,
+#updatetaskmodal {
+  overflow-y: auto;
+}
+
+
 /* MODAL BOX */
 .modals>div {
   background: var(--card);
   padding: 20px;
   border-radius: 10px;
-  width: 50%;
+  width: auto;
+  height: 60%;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
@@ -225,6 +318,7 @@ textarea {
   padding: 10px 15px;
   border-radius: 6px;
   display: none;
+  z-index: 1;
 }
 
 /* COUNT TASK */
@@ -260,6 +354,19 @@ td {
 
 @media (max-width: 768px) {
 
+  #pinmodalbox {
+    width: 85%;
+  }
+
+  .pincontent #checkpinbtn {
+    width: 40%;
+  }
+
+  
+.textcontents {
+  width: auto;
+  height: auto;
+}
   /* NAVBAR STACK */
   nav {
     flex-direction: column;
@@ -322,23 +429,40 @@ td {
     justify-content: center;
   }
 
-  /* MODAL FULL WIDTH */
-  .modals > div {
-    width: 90%;
-  }
 
   input,
   textarea,
   select {
     font-size: 14px;
   }
+
+  body {
+    /* display: flex;
+    justify-content: center;
+    flex-direction: column; */
+  }
+
+
+  main {
+    width: 100%;
+    max-width: 900px;
+  }
+
+  nav {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
 }
 
 /* EXTRA SMALL DEVICES */
 @media (max-width: 480px) {
-
   .appname h1 {
     font-size: 18px;
+  }
+
+  #tasklist h1 {
+    font-size: 20px;
   }
 
   button {
@@ -356,5 +480,23 @@ td {
 
   .taskinfo p {
     font-size: 13px;
+  }
+
+  /* body {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  } */
+
+
+  main {
+    width: 100%;
+    max-width: 900px;
+  }
+
+  nav {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
   }
 }
