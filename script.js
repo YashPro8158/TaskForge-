@@ -3,17 +3,15 @@
 let taskcount = document.getElementById("counttask");
 let modals = document.getElementById("modals");
 let openaddtaskmodal = document.getElementById("openaddtaskmodal");
-let deletemultipletaskbtn = document.getElementById("deletemultipletaskbtn");
 let filterbycategory = document.getElementById("filterbycategory");
 let filterbypriority = document.getElementById("filterbypriority");
 let themechange = document.getElementById("themechange");
-let taskcontainer = document.getElementById("taskcontainer");
 let newtaskmodal = document.getElementById("newtaskmodal")
 let deletetaskmodal = document.getElementById("deletetaskmodal")
 let updatetaskmodal = document.getElementById("updatetaskmodal")
 let taskaddbtn = document.getElementById("taskaddbtn");
+let taskpin = document.getElementById("taskpin");
 let closetaskmodal = document.getElementById("closetaskmodal");
-let alltasklist = document.getElementById("alltasklist");
 let closedeletemodal = document.getElementById("closedeletemodal");
 let taskforupdate = document.getElementById("taskforupdate");
 let closeupdteamodal = document.getElementById("closeupdteamodal");
@@ -36,7 +34,7 @@ loadcatergory()
 showalltask();
 
 
-document.getElementById("maintask").onclick = () => {
+document.getElementById("allmaintask").onclick = () => {
     showalltask();
 }
 // All Functions starts Here
@@ -114,9 +112,10 @@ function showalltask(data = storedtask) {
 
             <div class="taskactions">
                 <button class="cardbtn" onclick="updatetask(${index})"> <img src="Edit.svg" alt="edit"> Edit </button>
-                <button class="cardbtn" onclick="deletetask(${index})"><img src="Delete.svg" alt="delete"> Delete</button>
+                <button class="cardbtn" onclick="deletetask(${index})" id="taskdeleletbtn"><img src="Delete.svg" alt="delete"> Delete</button>
                 <button class="cardbtn" onclick="completedtask(${index})" id="markcompletedbtn"><img src="Done.svg" alt="done">Mark as complete</button>
                 <button class="cardbtn" onclick="pendingtask(${index})" id="markpendingbtn"><img src="Pending.svg" alt="pending"> Mark as pending</button>
+                <button class="cardbtn" onclick="viewfulltask(${index})" id="viewfullbtn"><img src="fullviewicon.svg" alt="fullviewicon"> View Task</button>
             </div>
 
         </div>
@@ -124,6 +123,7 @@ function showalltask(data = storedtask) {
         });
     }
 }
+
 
 
 function showcompletedtask(data = storedcompletedtask) {
@@ -234,6 +234,38 @@ function showpendingtask(data = storedpendingtask) {
 
 
 
+// Show Full Width Task
+
+
+function viewfulltask(index) {
+    document.getElementById("taskfullwidth").style.display = "block";
+    const data = storedtask[index];
+    document.getElementById("taskfullwidth").innerHTML = `
+    <div id="fullviewtaskcard">
+        <div class="textcontents" >
+            <h2>Task Title: </h2>
+            <p>${data.title}</p>
+            <h2>Task Message: </h2>
+            <p>${data.message}</p>
+            <div class="bottomflex">
+                <h2>Task Category: </h2>
+                <p>${data.category}</p>
+                <h2>Task Priority: </h2>
+                <p>${data.priority}</p>
+            </div>
+            <button id="closebtnfulltask" onclick="closefullviewtask()">Close</button>
+        </div>
+    </div>
+    `
+
+}
+function closefullviewtask() {
+    document.getElementById("taskfullwidth").style.display = "none";
+}
+
+
+
+
 
 
 function loadcatergory() {
@@ -275,29 +307,79 @@ function priorityfilter(value) {
 
 function updatetask(index) {
     let task = storedtask[index];
-    updatetasktitle.value = task.title;
-    updatemaintask.value = task.message;
-    updatetaskcategory.value = task.category
-    updatetaskimportant.value = task.priority
-    openupdatetaskmodal();
 
-    document.getElementById("updatetaskbtn").onclick = () => {
-        storedtask[index] = {
-            title: updatetasktitle.value,
-            message: updatemaintask.value,
-            category: updatetaskcategory.value,
-            priority: updatetaskimportant.value,
-        }
-        localStorage.setItem("alltask", JSON.stringify(storedtask));
-        showerror("Task Update Successfully", "green", "White");
-        loadcatergory();
-        showalltask();
-        tasktitle.value = ""
-        maintask.value = ""
-        taskcategory.value = ""
-        taskimportant.value = ""
-        closetaskmodalbox();
+
+    // checking is task is protected or not
+    if (task.isprotected === true) {
+        document.getElementById("pinmodalbox").classList.add("activepinbox");
+        document.getElementById("pinmodalbox").innerHTML = `
+    
+    <div class="pincontent">
+            <label for="checkpintext">Enter the Pin</label>
+            <input type="number" name="checkpintext" id="checkpintext">
+            <button id="checkpinbtn">Submit</button>
+            <button id="closepinbox">Close</button>
+    </div>
+        
+        `
+
+        // checking is task password is correct or not 
+        let inputtext = document.getElementById("checkpintext");
+        let attempts = 0;
+        document.getElementById("checkpinbtn").addEventListener("click", () => {
+            if (Number(inputtext.value) === Number(storedtask[index].pin)) {
+                document.getElementById("pinmodalbox").classList.remove("activepinbox");
+                inputtext.value = ""
+                updatetasktitle.value = task.title;
+                updatemaintask.value = task.message;
+                updatetaskcategory.value = task.category
+                updatetaskimportant.value = task.priority
+                openupdatetaskmodal();
+
+                document.getElementById("updatetaskbtn").onclick = () => {
+                    storedtask[index] = {
+                        title: updatetasktitle.value,
+                        message: updatemaintask.value,
+                        category: updatetaskcategory.value,
+                        priority: updatetaskimportant.value,
+                    }
+                    localStorage.setItem("alltask", JSON.stringify(storedtask));
+                    showerror("Task Update Successfully", "green", "White");
+                    loadcatergory();
+                    showalltask();
+                    tasktitle.value = ""
+                    maintask.value = ""
+                    taskcategory.value = ""
+                    taskimportant.value = ""
+                    closetaskmodalbox();
+                }
+            }
+            else {
+                attempts++
+                showerror(`${attempts} Wrong Attempt, Try Again`, "red", "White");
+                if (attempts > 2) {
+                    document.getElementById("pinmodalbox").classList.remove("activepinbox");
+                    showerror("To Many Attempts, Try again after some time", "red", "White");
+                }
+            }
+        })
+
+        document.getElementById("closepinbox").addEventListener("click", () => {
+            document.getElementById("pinmodalbox").classList.remove("activepinbox");
+
+        })
     }
+    else {
+
+        alert("No this object data not have any pin property !")
+    }
+
+
+
+
+
+
+
 
 
 
@@ -391,14 +473,66 @@ function removependingtask(index) {
 }
 
 
+
+
 // logic to delete the todo list
 function deletetask(index) {
-    storedtask.splice(index, 1);
-    localStorage.setItem("alltask", JSON.stringify(storedtask));
-    showerror("Task Delete Successfully", "red", "White");
-    loadcatergory();
-    showalltask();
+    let deletetaskdata = storedtask[index];
+
+    // checking is task is protected or not
+    if (deletetaskdata.isprotected === true) {
+        document.getElementById("pinmodalbox").classList.add("activepinbox");
+        document.getElementById("pinmodalbox").innerHTML = `
+    
+    <div class="pincontent">
+            <label for="checkpintext">Enter the Pin</label>
+            <input type="number" name="checkpintext" id="checkpintext">
+            <button id="checkpinbtn">Submit</button>
+            <button id="closepinbox">Close</button>
+    </div>
+        
+        `
+
+        // checking is task password is correct or not 
+        let inputtext = document.getElementById("checkpintext");
+        let attempts = 0;
+        document.getElementById("checkpinbtn").addEventListener("click", () => {
+            if (Number(inputtext.value) === Number(storedtask[index].pin)) {
+                document.getElementById("pinmodalbox").classList.remove("activepinbox");
+                inputtext.value = ""
+                storedtask.splice(index, 1);
+                localStorage.setItem("alltask", JSON.stringify(storedtask));
+                showerror("Task Delete Successfully", "Green", "White");
+                loadcatergory();
+                showalltask();
+            }
+            else {
+                attempts++
+                showerror(`${attempts} Wrong Attempt, Try Again`, "red", "White");
+                if (attempts > 2) {
+                    document.getElementById("pinmodalbox").classList.remove("activepinbox");
+                    showerror("To Many Attempts, Try again after some time", "red", "White");
+                }
+            }
+        })
+
+        document.getElementById("closepinbox").addEventListener("click", () => {
+            document.getElementById("pinmodalbox").classList.remove("activepinbox");
+
+        })
+    }
+    else {
+        storedtask.splice(index, 1);
+        localStorage.setItem("alltask", JSON.stringify(storedtask));
+        showerror("Task Delete Successfully", "Green", "White");
+        loadcatergory();
+        showalltask();
+    }
+
+
 }
+
+
 
 
 
@@ -428,12 +562,27 @@ closeupdatemodal.onclick = () => {
 }
 
 taskaddbtn.onclick = () => {
-    let alltask = {
-        title: tasktitle.value,
-        message: maintask.value,
-        category: taskcategory.value,
-        priority: taskimportant.value,
+    let alltask;
+    if (taskpin.value == "" || taskpin.value == null) {
+        alltask = {
+            title: tasktitle.value,
+            message: maintask.value,
+            category: taskcategory.value,
+            priority: taskimportant.value,
+            isprotected: false
+        }
     }
+    else {
+        alltask = {
+            title: tasktitle.value,
+            message: maintask.value,
+            category: taskcategory.value,
+            priority: taskimportant.value,
+            pin: taskpin.value,
+            isprotected: true
+        }
+    }
+
     storedtask.push(alltask);
     localStorage.setItem("alltask", JSON.stringify(storedtask));
     showerror("Task Added Successfully", "green", "White");
@@ -443,6 +592,7 @@ taskaddbtn.onclick = () => {
     maintask.value = ""
     taskcategory.value = ""
     taskimportant.value = ""
+    taskpin.value = ""
     closetaskmodalbox();
 
 }
@@ -461,3 +611,7 @@ document.getElementById("allcompletedtask").onclick = () => {
 document.getElementById("allpendingtask").onclick = () => {
     showpendingtask();
 }
+
+// Security Logic Starts 
+
+
