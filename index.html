@@ -16,8 +16,9 @@
         <div class="appname">
             <h1>TaskForge🔥</h1>
         </div>
+
         <div class="buttons">
-            <button id="maintask">All Task</button>
+            <button id="allmaintask">All Task</button>
             <button id="openaddtaskmodal">Add New Task</button>
             <select name="filterbycategory" id="filterbycategory"></select>
             <select name="filterbypriority" id="filterbypriority">
@@ -33,6 +34,7 @@
     </nav>
     <main>
         <div id="taskcontainer">
+                
             <div id="tasklist"></div>
         </div>
     </main>
@@ -44,6 +46,8 @@
                 <input type="text" name="tasktitle" id="tasktitle">
                 <label for="maintask">Your Task</label>
                 <textarea name="maintask" id="maintask" cols="30" rows="10"></textarea>
+                <label for="taskpin">Pin: (Protect your task, you can leave this blank if you dont want)</label>
+                <input type="number" name="taskpin" id="taskpin" maxlength="6">
                 <label for="taskcategory">type the Category of this task</label>
                 <input type="text" name="taskcategory" id="taskcategory">
                 <label for="taskimportant">Important level</label>
@@ -67,7 +71,7 @@
                 <label for="updatetaskcategory">type the Category of this task</label>
                 <input type="text" name="updatetaskcategory" id="updatetaskcategory">
                 <label for="updatetaskimportant">Important level</label>
-                <select name="updatetaskimportant" id="updatetaskimportant">l
+                <select name="updatetaskimportant" id="updatetaskimportant">
                     <option value="high">High Important</option>
                     <option value="normal">Normal</option>
                     <option value="low">Low</option>
@@ -76,8 +80,12 @@
                 <button id="closeupdatemodal">Close</button>
             </form>
         </div>
+
+
     </div>
 
+    <div id="taskfullwidth"></div>
+    <div class="pinmodalbox" id="pinmodalbox"></div>
     <script src="script.js"></script>
 </body>
 
